@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "61f6b9e3-0232-4242-a96e-17d2281a304d",
+		"name": "FIAP-NOTES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fiap\",\r\n    \"password\": \"fiap\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/users",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fiap\",\r\n    \"password\": \"fiap\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/users/login",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Note",
+			"item": [
+				{
+					"name": "Save Note",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"urgent\": false,\r\n  \"text\": \"quarta nota\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/fiap-notes",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"fiap-notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Note",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"urgent\": false,\r\n  \"text\": \"primeira nota atualizada\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/1",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"fiap-notes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Note By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/4",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"fiap-notes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Notes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/fiap-notes",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"fiap-notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Note",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/4",
+							"protocol": "https",
+							"host": [
+								"fiap-notes",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"fiap-notes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
