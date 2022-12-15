@@ -3,11 +3,17 @@ package com.project.fiapnotes.controller;
 import com.project.fiapnotes.dtos.FiapNotesDto;
 import com.project.fiapnotes.models.FiapNotesModel;
 import com.project.fiapnotes.service.FiapNotesService;
+import com.project.fiapnotes.service.FileService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -20,16 +26,38 @@ public class FiapNotesController {
 
     final FiapNotesService service;
 
-    public FiapNotesController(FiapNotesService service) {
+    public FiapNotesController(FiapNotesService service, FileService fileService) {
         this.service = service;
+        this.fileService = fileService;
     }
 
-    @PostMapping
-    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
-        var fiapNotesModel = new FiapNotesModel();
-        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
-        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
+    private final FileService fileService;
+
+
+//    @PostMapping()
+//    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
+//        var fiapNotesModel = new FiapNotesModel();
+//        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
+//        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+//        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
+//    }
+
+
+    @PostMapping( produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
+    public ResponseEntity<Object> saveNote(@RequestBody MultipartFile file) {
+
+
+        try {
+            if (fileService.uploadAndDownloadFile(file, "files")) {
+                final ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(fileService
+                        .getFileStorageLocation() + "/" + file.getOriginalFilename())));
+                return ResponseEntity.status(HttpStatus.OK).contentLength(resource.contentLength()).body(resource);
+            }
+            //return ResponseEntity.ok("Error while processing file");
+        } catch (Exception e) {
+            // return ResponseEntity.ok("Error while processing file");
+        }
+        return ResponseEntity.ok("Error while processing file");
     }
 
     @GetMapping

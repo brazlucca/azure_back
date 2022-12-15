@@ -19,3 +19,11 @@ spring:
 jwt:
   secret: f14ajdj646
   expireMinutes: 20
+azure:
+  storage:
+    account-name: storagefiapnotes
+    account-key: xCN9fp/nJXqcRCjTEc4xvQZjYmzvQcQzhMrTwaG9LDgG6cXl5Uhhn313Xg4Hg9ALlZLSsAW6uAvT+ASt7XUCbw==
+    blob-endpoint: https://storagefiapnotes.blob.core.windows.net
+
+file:
+  upload-dir: ./uploads
