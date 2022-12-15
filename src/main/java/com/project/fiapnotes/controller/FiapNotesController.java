@@ -44,11 +44,14 @@ public class FiapNotesController {
 
 
     @PostMapping( produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
-    public ResponseEntity<Object> saveNote(@RequestBody MultipartFile file) {
+    public ResponseEntity<Object> saveNote(@RequestBody MultipartFile file,@RequestBody FiapNotesDto fiapNotesDto) {
 
-
+        var fiapNotesModel = new FiapNotesModel();
+        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
+        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        var entity = service.saveNote(fiapNotesModel);
         try {
-            if (fileService.uploadAndDownloadFile(file, "files")) {
+            if (fileService.uploadAndDownloadFile(file, "imagem", "img" + entity.getId().toString())) {
                 final ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(fileService
                         .getFileStorageLocation() + "/" + file.getOriginalFilename())));
                 return ResponseEntity.status(HttpStatus.OK).contentLength(resource.contentLength()).body(resource);

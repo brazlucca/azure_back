@@ -43,10 +43,10 @@ public class FileService {
         return fileStorageLocation;
     }
 
-    public Boolean uploadAndDownloadFile(@NonNull MultipartFile file, String containerName) {
+    public Boolean uploadAndDownloadFile(@NonNull MultipartFile file, String containerName, String filename) {
         boolean isSuccess = true;
         BlobContainerClient blobContainerClient = getBlobContainerClient(containerName);
-        String filename = file.getOriginalFilename();
+        //String filename = file.getOriginalFilename();
         BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(filename).getBlockBlobClient();
         try {
             // delete file if already exists in that container
