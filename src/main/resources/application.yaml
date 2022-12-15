@@ -6,11 +6,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:sqlserver://server-fiap-notes.database.windows.net:1433;database=dbFiapNotes;
+    url: jdbc:h2:~/dbh2/fiap-notes;DB_CLOSE_ON_EXIT=FALSE
     username: fiap
-    password: roxo@2022
-  azure:
-    passwordless-enabled: true
+    password: fiap
   h2:
     console:
       enabled: true
@@ -18,18 +16,14 @@ spring:
     hibernate:
       ddl-auto: update
 
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-
-  cloud:
-    azure:
-      storage:
-        blob:
-          account-name: storagefiapnotes
-          account-key: xCN9fp/nJXqcRCjTEc4xvQZjYmzvQcQzhMrTwaG9LDgG6cXl5Uhhn313Xg4Hg9ALlZLSsAW6uAvT+ASt7XUCbw==
-          endpoint: DefaultEndpointsProtocol=https;AccountName=storagefiapnotes;AccountKey=xCN9fp/nJXqcRCjTEc4xvQZjYmzvQcQzhMrTwaG9LDgG6cXl5Uhhn313Xg4Hg9ALlZLSsAW6uAvT+ASt7XUCbw==;EndpointSuffix=core.windows.net
-
 jwt:
   secret: f14ajdj646
   expireMinutes: 20
+azure:
+  storage:
+    account-name: storagefiapnotes
+    account-key: xCN9fp/nJXqcRCjTEc4xvQZjYmzvQcQzhMrTwaG9LDgG6cXl5Uhhn313Xg4Hg9ALlZLSsAW6uAvT+ASt7XUCbw==
+    blob-endpoint: https://storagefiapnotes.blob.core.windows.net
+
+file:
+  upload-dir: ./uploads
