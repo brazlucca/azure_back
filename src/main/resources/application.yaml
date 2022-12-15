@@ -6,24 +6,35 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:h2:~/dbh2/fiap-notes;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:sqlserver://dbserverfiapnotes.database.windows.net:1433;database=db-fiap-notes;user=fiap@dbserverfiapnotes;password=roxo@2022;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    #url: jdbc:sqlserver://dbserverfiapnotes.database.windows.net:1433;database=db-fiap-notes;
     username: fiap
-    password: fiap
+    password: roxo@2022
   h2:
     console:
       enabled: true
   jpa:
     hibernate:
       ddl-auto: update
-
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
 jwt:
   secret: f14ajdj646
   expireMinutes: 20
 azure:
   storage:
     account-name: storagefiapnotes
-    account-key: xCN9fp/nJXqcRCjTEc4xvQZjYmzvQcQzhMrTwaG9LDgG6cXl5Uhhn313Xg4Hg9ALlZLSsAW6uAvT+ASt7XUCbw==
-    blob-endpoint: https://storagefiapnotes.blob.core.windows.net
+    account-key: dcF5QBpIpqu6aSOEtmFrgTF6wkNvYiEPO3H4oa3ujMcanS6x96t3x6wx2B+mdHC+I6tCQE+Y/tpi+AStawIfmw==
+    blob-endpoint: https://storagefiapnotes.blob.core.windows.net/
 
 file:
   upload-dir: ./uploads
+
+
+  #spring.datasource.url= jdbc:sqlserver://localhost;databaseName=bezkoder_db
+  #spring.datasource.username= zkoder
+  #spring.datasource.password= 123456
+
+  #spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.SQLServer2012Dialect
+  #spring.jpa.hibernate.ddl-auto= update

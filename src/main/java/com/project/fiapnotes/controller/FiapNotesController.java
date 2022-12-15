@@ -32,29 +32,29 @@ public class FiapNotesController {
         this.service = service;
     }
 
-//    @PostMapping
-//    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
-//        var fiapNotesModel = new FiapNotesModel();
-//        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
-//        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-//        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
-//    }
-
     @PostMapping
-    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto, @RequestParam("file") String file) throws IOException {
-
+    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
         var fiapNotesModel = new FiapNotesModel();
         BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
         fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-
-        var fiapNotesModel1 = service.saveNote(fiapNotesModel);
-
-        try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
-            os.write(file.getBytes());
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(fiapNotesModel1);
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
     }
+
+//    @PostMapping
+//    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto, @RequestParam("file") String file) throws IOException {
+//
+//        var fiapNotesModel = new FiapNotesModel();
+//        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
+//        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+//
+//        var fiapNotesModel1 = service.saveNote(fiapNotesModel);
+//
+//        try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
+//            os.write(file.getBytes());
+//        }
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(fiapNotesModel1);
+//    }
 
     @GetMapping
     public ResponseEntity<List<FiapNotesModel>> getNotes() {
