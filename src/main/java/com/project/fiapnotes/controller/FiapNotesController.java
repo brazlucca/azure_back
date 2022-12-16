@@ -5,6 +5,7 @@ import com.project.fiapnotes.models.FiapNotesModel;
 import com.project.fiapnotes.service.FiapNotesService;
 import com.project.fiapnotes.service.FileService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -39,37 +40,33 @@ public class FiapNotesController {
 
     private final FileService fileService;
 
-//    @PostMapping
-//    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
-//        var fiapNotesModel = new FiapNotesModel();
-//        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
-//        fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
-//        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
-//    }
-
     @PostMapping
-    public ResponseEntity<Object> saveNote(@RequestBody MultipartFile file) throws IOException {
-
+    public ResponseEntity<Object> saveNote(@RequestBody FiapNotesDto fiapNotesDto) {
         var fiapNotesModel = new FiapNotesModel();
-        fiapNotesModel.setText("Texto Teste");
-        fiapNotesModel.setUrgent(true);
-//        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
+        BeanUtils.copyProperties(fiapNotesDto, fiapNotesModel);
         fiapNotesModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.saveNote(fiapNotesModel));
+    }
 
-        var fiapNotesModel1 = service.saveNote(fiapNotesModel);
+    @PostMapping("/{id}/uploadImage")
+    public ResponseEntity<Object> uploadImageNote(@RequestBody MultipartFile file, @PathVariable Long id) throws IOException {
 
-        try {
-            if (fileService.uploadAndDownloadFile(file, "imagem", "img" + fiapNotesModel1.getId().toString())) {
-                final ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(fileService
-                        .getFileStorageLocation() + "/" + file.getOriginalFilename())));
-                return ResponseEntity.status(HttpStatus.OK).contentLength(resource.contentLength()).body(resource);
+        Optional<FiapNotesModel> notesModelOptional = service.findById(id);
+        if (!notesModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Note not found");
+        } else {
+            try {
+                if (fileService.uploadAndDownloadFile(file, "imagem", "img" + notesModelOptional.get().getId().toString())) {
+//                    final ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(Paths.get(fileService
+//                            .getFileStorageLocation() + "/" + file.getOriginalFilename())));
+                    return ResponseEntity.status(HttpStatus.OK).body("Imagem atualizada");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error while processing file");
             }
-            //return ResponseEntity.ok("Error while processing file");
-        } catch (Exception e) {
-            // return ResponseEntity.ok("Error while processing file");
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(fiapNotesModel1);
+        return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
 
     @GetMapping
@@ -85,6 +82,26 @@ public class FiapNotesController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(notesModelOptional.get());
+    }
+
+    @GetMapping("/{id}/downloadImage")
+    public ResponseEntity<Object> getImageNote(@RequestBody MultipartFile file, @PathVariable Long id) throws IOException {
+
+        Optional<FiapNotesModel> notesModelOptional = service.findById(id);
+        if (!notesModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Note not found");
+        } else {
+            try {
+                var filenameString = "img"+ notesModelOptional.get().getId().toString();
+                ByteArrayResource resource = fileService.getBlobContainerClient2("imagem","img"+ notesModelOptional.get().getId().toString());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filenameString + "\"");
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).headers(headers).body(resource);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error while processing file");
+            }
+        }
+
     }
 
     @PutMapping("/{id}")

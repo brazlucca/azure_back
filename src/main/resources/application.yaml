@@ -7,7 +7,6 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     url: jdbc:sqlserver://dbserverfiapnotes.database.windows.net:1433;database=db-fiap-notes;user=fiap@dbserverfiapnotes;password=roxo@2022;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
-    #url: jdbc:sqlserver://dbserverfiapnotes.database.windows.net:1433;database=db-fiap-notes;
     username: fiap
     password: roxo@2022
   h2:
@@ -30,11 +29,3 @@ azure:
 
 file:
   upload-dir: ./uploads
-
-
-  #spring.datasource.url= jdbc:sqlserver://localhost;databaseName=bezkoder_db
-  #spring.datasource.username= zkoder
-  #spring.datasource.password= 123456
-
-  #spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.SQLServer2012Dialect
-  #spring.jpa.hibernate.ddl-auto= update

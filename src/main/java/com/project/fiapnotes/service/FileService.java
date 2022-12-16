@@ -1,17 +1,18 @@
 package com.project.fiapnotes.service;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.project.fiapnotes.config.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -74,5 +75,28 @@ public class FileService {
             blobContainerClient.create();
         }
         return blobContainerClient;
+    }
+
+    public @NonNull ByteArrayResource getBlobContainerClient2(String containerName, String filename) {
+        BlobContainerClient blobContainerClient = getBlobContainerClient(containerName);
+        //String filename = file.getOriginalFilename();
+        BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(filename).getBlockBlobClient();
+
+        if (blockBlobClient.exists()) {
+//            String tempFilePath = fileStorageLocation + "/" + filename;
+//            BlobProperties blobProperties = blockBlobClient.downloadToFile(new File(tempFilePath).getPath());
+
+            BlobClient blob = blobContainerClient.getBlobClient(filename);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            blob.download(outputStream);
+            final byte[] bytes = outputStream.toByteArray();
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            ByteArrayResource resource = new ByteArrayResource(bytes);
+
+            return resource;
+        }
+
+        return null;
+
     }
 }
