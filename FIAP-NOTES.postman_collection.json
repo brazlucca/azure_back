@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "61f6b9e3-0232-4242-a96e-17d2281a304d",
+		"_postman_id": "4b71d34f-e358-4fcb-b172-87136706489f",
 		"name": "FIAP-NOTES",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"fiap\",\r\n    \"password\": \"fiap\"\r\n}",
+							"raw": "{\r\n    \"username\": \"fiap13\",\r\n    \"password\": \"fiap13\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,12 +23,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/users",
+							"raw": "https://wa-fiap-notes-backend.azurewebsites.net/users",
 							"protocol": "https",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"wa-fiap-notes-backend",
+								"azurewebsites",
+								"net"
 							],
 							"path": [
 								"users"
@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"fiap\",\r\n    \"password\": \"fiap\"\r\n}",
+							"raw": "{\r\n    \"username\": \"fiap10\",\r\n    \"password\": \"fiap10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,12 +65,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/users/login",
+							"raw": "https://wa-fiap-notes-backend.azurewebsites.net/users/login",
 							"protocol": "https",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"wa-fiap-notes-backend",
+								"azurewebsites",
+								"net"
 							],
 							"path": [
 								"users",
@@ -89,10 +89,17 @@
 					"name": "Save Note",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "for",
+								"value": "",
+								"type": "default",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"urgent\": false,\r\n  \"text\": \"quarta nota\"\r\n}",
+							"raw": "{\r\n  \"urgent\": true,\r\n  \"text\": \"psg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -100,15 +107,70 @@
 							}
 						},
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/fiap-notes",
-							"protocol": "https",
+							"raw": "http://localhost:8081/fiap-notes",
+							"protocol": "http",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8081",
 							"path": [
 								"fiap-notes"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Note Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "for",
+								"value": "",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/Lucca/Downloads/palmeiras4.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/fiap-notes/19/uploadImage",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"fiap-notes",
+								"19",
+								"uploadImage"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -121,7 +183,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"urgent\": false,\r\n  \"text\": \"primeira nota atualizada\"\r\n}",
+							"raw": "{\r\n  \"urgent\": false,\r\n  \"text\": \"palmeiras\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -129,16 +191,15 @@
 							}
 						},
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/1",
-							"protocol": "https",
+							"raw": "http://localhost:8081/fiap-notes/19",
+							"protocol": "http",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8081",
 							"path": [
 								"fiap-notes",
-								"1"
+								"19"
 							]
 						}
 					},
@@ -150,16 +211,36 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/4",
-							"protocol": "https",
+							"raw": "http://localhost:8081/fiap-notes/19",
+							"protocol": "http",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8081",
 							"path": [
 								"fiap-notes",
-								"4"
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Note By Id Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/fiap-notes/19/downloadImage",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"fiap-notes",
+								"19",
+								"downloadImage"
 							]
 						}
 					},
@@ -171,13 +252,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/fiap-notes",
-							"protocol": "https",
+							"raw": "http://localhost:8081/fiap-notes",
+							"protocol": "http",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8081",
 							"path": [
 								"fiap-notes"
 							]
@@ -191,16 +271,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://fiap-notes.herokuapp.com/fiap-notes/4",
-							"protocol": "https",
+							"raw": "http://localhost:8081/fiap-notes/16",
+							"protocol": "http",
 							"host": [
-								"fiap-notes",
-								"herokuapp",
-								"com"
+								"localhost"
 							],
+							"port": "8081",
 							"path": [
 								"fiap-notes",
-								"4"
+								"16"
 							]
 						}
 					},
